@@ -1,10 +1,44 @@
 <?php
 // controllers/ReporteControllerSPP.php - Controlador de reportes adaptado
+require_once 'config/database.php';
+require_once 'models/ReporteSPP.php'; // <-- Agrega esta línea
 class ReporteControllerSPP {
     private $db;
-    
+    private $reporteModel;
+
     public function __construct() {
         $this->db = new Database();
+        $this->reporteModel = new ReporteSPP($this->db);
+    }
+    
+
+     public function exportarDatos($tipo, $formato, $fechaInicio, $fechaFin) {
+        try {
+            $datos = [];
+            switch ($tipo) {
+                case 'estado':
+                    $datos = $this->reporteModel->getTurnosPorEstado($fechaInicio, $fechaFin);
+                    break;
+                case 'especialidad':
+                    $datos = $this->reporteModel->getTurnosPorEspecialidad($fechaInicio, $fechaFin);
+                    break;
+                default:
+                    throw new Exception("Tipo de reporte no válido.");
+            }
+
+            switch ($formato) {
+                case 'csv':
+                    return $this->convertirACSV($datos);
+                case 'excel':
+                    return $this->convertirAExcel($datos);
+                default:
+                    return $datos;
+            }
+
+        } catch (Exception $e) {
+            error_log("Error exportando datos: " . $e->getMessage());
+            return [];
+        }
     }
     
     /**
