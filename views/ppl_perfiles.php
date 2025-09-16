@@ -88,7 +88,7 @@ $internos = $controller->listarInternos();
                                 <?php foreach ($internos as $interno): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($interno['dni'] ?? 'N/A') ?></td>
-                                        <td><?= htmlspecialchars($interno['nombre'] . ' ' . $interno['apellido']) ?></td>
+                                        <td><?= htmlspecialchars(($interno['nombre'] ?? '') . ' ' . ($interno['apellido'] ?? '')) ?></td>
                                         <td><?= htmlspecialchars($interno['juzgado_nombre'] ?? 'N/A') ?></td>
                                         <td><?= htmlspecialchars($interno['sector'] . ' / ' . $interno['pabellon'] . ' / ' . $interno['num_celda']) ?></td>
                                         <td>

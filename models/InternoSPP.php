@@ -21,18 +21,17 @@ class InternoSPP {
      * Listar internos activos con datos médicos
      */
     public function listarActivos() {
-        $sql = "SELECT 
-                    id, nombre, apellido, dni, fecha_nac,
-                    obra_social, tiene_pami, juzgado_nombre,
-                    sector, pabellon, num_celda, estado_interno,
-                    alergias, medicamentos_habituales, enfermedades_cronicas
-                FROM vista_internos_sanidad 
-                WHERE estado_interno = 'activo' 
-                ORDER BY apellido, nombre";
-        
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $sql = "SELECT
+                id, apellidos, nombres, dni, fechanac,
+                obra_social, tiene_pami, apodo,
+                alergias, medicamentos_habituales, enfermedades_cronicas
+            FROM vista_internos_sanidad
+            WHERE estado = 'Activo'
+            ORDER BY apellidos, nombres";
+
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
     
     /**
      * Buscar internos por término

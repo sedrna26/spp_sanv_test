@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-09-2025 a las 15:27:45
+-- Tiempo de generación: 09-09-2025 a las 22:30:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -126654,10 +126654,6 @@ CREATE TABLE `persona` (
   `tiene_pami` tinyint(1) DEFAULT 0,
   `contacto_emergencia` varchar(100) DEFAULT NULL,
   `telefono_emergencia` varchar(50) DEFAULT NULL,
-  `alergias` text DEFAULT NULL,
-  `medicamentos_habituales` text DEFAULT NULL,
-  `enfermedades_cronicas` text DEFAULT NULL,
-  `ultima_revision_medica` date DEFAULT NULL,
   `edad` int(3) NOT NULL,
   `direccion` varchar(255) NOT NULL DEFAULT 'Sin dirección',
   `genero` varchar(50) NOT NULL,
@@ -126671,9 +126667,9 @@ CREATE TABLE `persona` (
 -- Volcado de datos para la tabla `persona`
 --
 
-INSERT INTO `persona` (`id`, `dni`, `cuil`, `apellidos`, `nombres`, `fechanac`, `tipo_sangre`, `obra_social`, `numero_afiliado`, `tiene_pami`, `contacto_emergencia`, `telefono_emergencia`, `alergias`, `medicamentos_habituales`, `enfermedades_cronicas`, `ultima_revision_medica`, `edad`, `direccion`, `genero`, `estadocivil`, `estado`, `correo`, `celular`) VALUES
-(1, '44317337', NULL, 'Diaz', 'Elias Esequiel', '2002-09-27', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 22, 'Sin dirección', 'MASCULINO', 'SOLTERO', 'Activo', NULL, NULL),
-(2475, '11111111', NULL, 'Fernandez', 'Cristino', '2002-06-11', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 23, '1', 'Femenino', 'Soltero', 'Activo', NULL, NULL);
+INSERT INTO `persona` (`id`, `dni`, `cuil`, `apellidos`, `nombres`, `fechanac`, `tipo_sangre`, `obra_social`, `numero_afiliado`, `tiene_pami`, `contacto_emergencia`, `telefono_emergencia`, `edad`, `direccion`, `genero`, `estadocivil`, `estado`, `correo`, `celular`) VALUES
+(1, '44317337', NULL, 'Diaz', 'Elias Esequiel', '2002-09-27', NULL, NULL, NULL, 0, NULL, NULL, 22, 'Sin dirección', 'MASCULINO', 'SOLTERO', 'Activo', NULL, NULL),
+(2475, '11111111', NULL, 'Fernandez', 'Cristino', '2002-06-11', NULL, NULL, NULL, 0, NULL, NULL, 23, '1', 'Femenino', 'Soltero', 'Activo', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -126701,7 +126697,7 @@ CREATE TABLE `ppl` (
 --
 
 INSERT INTO `ppl` (`id`, `idpersona`, `apodo`, `trabaja`, `profesion`, `foto`, `huella`, `prontuario`, `anulado`, `posee_dni`, `fecha_carga`, `datos_anexos`) VALUES
-(1, 2475, '', 1, 'crack', '6d57dc5333.png', NULL, '1234', 0, 1, '2025-06-12 09:33:49', NULL);
+(2, 1, 'Vito', 1, 'Carpintero', NULL, NULL, NULL, 0, 1, '2025-09-09 17:02:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -129206,28 +129202,26 @@ INSERT INTO `usuarios` (`id_usuario`, `id_persona`, `id_rol`, `nombre_usuario`, 
 --
 CREATE TABLE `vista_internos_sanidad` (
 `id` int(11)
-,`nombres` varchar(50)
-,`apellidos` varchar(50)
 ,`dni` varchar(13)
+,`cuil` varchar(50)
+,`apellidos` varchar(50)
+,`nombres` varchar(50)
 ,`fechanac` date
-,`tipo_sangre` varchar(5)
+,`estado` varchar(150)
 ,`obra_social` varchar(100)
 ,`numero_afiliado` varchar(50)
 ,`tiene_pami` tinyint(1)
 ,`contacto_emergencia` varchar(100)
 ,`telefono_emergencia` varchar(50)
-,`alergias` text
-,`medicamentos_habituales` text
-,`enfermedades_cronicas` text
-,`ultima_revision_medica` date
-,`situacionlegal` varchar(15)
-,`id_juzgado` int(11)
-,`juzgado_nombre` varchar(30)
-,`sector` int(11)
-,`pabellon` int(11)
-,`num_celda` int(11)
-,`fecha_ultimo_alojamiento` date
-,`estado_interno` varchar(10)
+,`direccion` varchar(255)
+,`genero` varchar(50)
+,`estadocivil` varchar(50)
+,`alergias` varchar(255)
+,`medicamentos_habituales` varchar(255)
+,`enfermedades_cronicas` varchar(255)
+,`apodo` varchar(20)
+,`trabaja` tinyint(1)
+,`profesion` varchar(50)
 );
 
 -- --------------------------------------------------------
@@ -129237,7 +129231,7 @@ CREATE TABLE `vista_internos_sanidad` (
 --
 DROP TABLE IF EXISTS `vista_internos_sanidad`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_internos_sanidad`  AS SELECT `p`.`id` AS `id`, `p`.`nombres` AS `nombres`, `p`.`apellidos` AS `apellidos`, `p`.`dni` AS `dni`, `p`.`fechanac` AS `fechanac`, `p`.`tipo_sangre` AS `tipo_sangre`, `p`.`obra_social` AS `obra_social`, `p`.`numero_afiliado` AS `numero_afiliado`, `p`.`tiene_pami` AS `tiene_pami`, `p`.`contacto_emergencia` AS `contacto_emergencia`, `p`.`telefono_emergencia` AS `telefono_emergencia`, `p`.`alergias` AS `alergias`, `p`.`medicamentos_habituales` AS `medicamentos_habituales`, `p`.`enfermedades_cronicas` AS `enfermedades_cronicas`, `p`.`ultima_revision_medica` AS `ultima_revision_medica`, `sl`.`situacionlegal` AS `situacionlegal`, `sl`.`id_juzgado` AS `id_juzgado`, `j`.`nombre` AS `juzgado_nombre`, `ca`.`sector` AS `sector`, `ca`.`pabellon` AS `pabellon`, `ca`.`num_celda` AS `num_celda`, `ca`.`fecha` AS `fecha_ultimo_alojamiento`, CASE WHEN `ca`.`libertad` = 1 THEN 'liberado' WHEN `ca`.`anulado` = 1 THEN 'trasladado' ELSE 'activo' END AS `estado_interno` FROM ((((`persona` `p` left join `ppl` `ppl_rel` on(`p`.`id` = `ppl_rel`.`idpersona`)) left join `situacionlegal` `sl` on(`p`.`id` = `sl`.`id_ppl`)) left join `juzgado` `j` on(`sl`.`id_juzgado` = `j`.`id`)) left join `cambiosdealojamientos` `ca` on(`p`.`id` = `ca`.`cod_ppl` and `ca`.`bandera` = 1)) WHERE `p`.`id` > 0 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_internos_sanidad`  AS SELECT `p`.`id` AS `id`, `p`.`dni` AS `dni`, `p`.`cuil` AS `cuil`, `p`.`apellidos` AS `apellidos`, `p`.`nombres` AS `nombres`, `p`.`fechanac` AS `fechanac`, `p`.`estado` AS `estado`, `p`.`obra_social` AS `obra_social`, `p`.`numero_afiliado` AS `numero_afiliado`, `p`.`tiene_pami` AS `tiene_pami`, `p`.`contacto_emergencia` AS `contacto_emergencia`, `p`.`telefono_emergencia` AS `telefono_emergencia`, `p`.`direccion` AS `direccion`, `p`.`genero` AS `genero`, `p`.`estadocivil` AS `estadocivil`, `dm`.`alergia_especifique` AS `alergias`, `dm`.`medicacion` AS `medicamentos_habituales`, `dm`.`otras_enfermedades` AS `enfermedades_cronicas`, `ppl`.`apodo` AS `apodo`, `ppl`.`trabaja` AS `trabaja`, `ppl`.`profesion` AS `profesion` FROM ((`persona` `p` join `ppl` on(`p`.`id` = `ppl`.`idpersona`)) left join `datos_medicos` `dm` on(`ppl`.`id` = `dm`.`id_ppl`)) WHERE `p`.`estado` = 'Activo' ORDER BY `p`.`apellidos` ASC, `p`.`nombres` ASC ;
 
 --
 -- Índices para tablas volcadas
@@ -129724,7 +129718,7 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de la tabla `ppl`
 --
 ALTER TABLE `ppl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `ppl_causas`
