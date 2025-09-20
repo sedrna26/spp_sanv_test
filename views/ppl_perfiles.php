@@ -7,24 +7,24 @@ require_once 'config/database.php';
 require_once 'controllers/InternoControllerSPP.php';
 
 // Manejo de peticiones AJAX
-if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    header('Content-Type: application/json');
-    $controller = new InternoControllerSPP();
-    
-    if (isset($_GET['id'])) {
-        $interno = $controller->obtenerInternoPorId($_GET['id']);
-        if ($interno) {
-            echo json_encode(['success' => true, 'interno' => $interno]);
-        } else {
-            http_response_code(404);
-            echo json_encode(['success' => false, 'message' => 'PPL no encontrado.']);
-        }
-    } else {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'ID no proporcionado.']);
-    }
-    exit;
-}
+// if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+//     header('Content-Type: application/json');
+//     $controller = new InternoControllerSPP();
+
+//     if (isset($_GET['id'])) {
+//         $interno = $controller->obtenerInternoPorId($_GET['id']);
+//         if ($interno) {
+//             echo json_encode(['success' => true, 'interno' => $interno]);
+//         } else {
+//             http_response_code(404);
+//             echo json_encode(['success' => false, 'message' => 'PPL no encontrado.']);
+//         }
+//     } else {
+//         http_response_code(400);
+//         echo json_encode(['success' => false, 'message' => 'ID no proporcionado.']);
+//     }
+//     exit;
+// }
 
 // Lógica de la vista principal
 $controller = new InternoControllerSPP();
@@ -32,6 +32,7 @@ $internos = $controller->listarInternos();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Perfiles de PPL</title>
@@ -41,25 +42,31 @@ $internos = $controller->listarInternos();
         body {
             background-color: #f0f2f5;
         }
+
         .container {
             margin-top: 20px;
         }
+
         .card-header {
             background-color: #34495e;
             color: white;
             font-weight: bold;
         }
+
         .table thead th {
             background-color: #e9ecef;
         }
-        .table-striped > tbody > tr:nth-of-type(odd) {
+
+        .table-striped>tbody>tr:nth-of-type(odd) {
             background-color: #f8f9fa;
         }
+
         .profile-btn {
             cursor: pointer;
         }
     </style>
 </head>
+
 <body>
     <div class="container my-5">
         <div class="card shadow-sm">
@@ -114,7 +121,7 @@ $internos = $controller->listarInternos();
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
@@ -127,9 +134,11 @@ $internos = $controller->listarInternos();
     <script>
         function verPerfil(id) {
             $.ajax({
-                url: 'ppl_perfiles.php',
+                url: 'index.php?action=internos',
                 type: 'GET',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
@@ -171,4 +180,5 @@ $internos = $controller->listarInternos();
         }
     </script>
 </body>
+
 </html>
